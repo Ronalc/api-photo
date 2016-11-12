@@ -1,0 +1,196 @@
+// Al routes return error (true and false) and Message
+
+
+/////////////////////////////////////////
+////////////////Users////////////////////
+/////////////////////////////////////////
+-------Add profile information----------
+  POST---Url 127.0.0.1:8000/api/user
+  -Send-JSON
+  {
+  	  "name": "test 3",
+      "lastName": "testeando3",
+      "userName": "Testamendo3",
+      "password": "1234",
+      "age": 18,
+      "dateOfBirth": "04/06/1992",
+      "email": "test3@testeando.com",
+      "sex": "Men",
+      "passwordConfirmation": "1234"
+    }
+  -Return-Status(201)-JSON
+  {
+    "user": {
+      "__v": 0,
+      "name": "test 3",
+      "lastName": "testeando3",
+      "userName": "Testamendo3",
+      "password": "1234",
+      "age": 18,
+      "dateOfBirth": "1992-04-06T04:00:00.000Z",
+      "email": "test3@testeando.com",
+      "sex": "Men",
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+------------Get all users---------------
+  GET---Url 127.0.0.1:8000/api/user
+  -Return-status(200)-JSON
+  {
+    "user": {
+      "__v": 0,
+      "name": "test 3",
+      "lastName": "testeando3",
+      "userName": "Testamendo3",
+      "password": "1234",
+      "age": 18,
+      "dateOfBirth": "1992-04-06T04:00:00.000Z",
+      "email": "test3@testeando.com",
+      "sex": "Men",
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+-----------Get user for id--------------
+  GET---Url 127.0.0.1:8000/api/user/id
+  -Return-status(200)-JSON
+  {
+    "user": {
+      "__v": 0,
+      "name": "test 3",
+      "lastName": "testeando3",
+      "userName": "Testamendo3",
+      "password": "1234",
+      "age": 18,
+      "dateOfBirth": "1992-04-06T04:00:00.000Z",
+      "email": "test3@testeando.com",
+      "sex": "Men",
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+----------Edit user for id--------------
+  PUT---Url 127.0.0.1:8000/api/user/id
+  -Send-JSON
+  {
+    "name": "",
+    "lastName": "",
+    "userName": "",
+    "password": ""
+  }
+  -Return-status(200)-JSON
+  {
+    "user": {
+      "__v": 0,
+      "name": "test 3",
+      "lastName": "testeando3",
+      "userName": "Testamendo3",
+      "password": "1234",
+      "age": 18,
+      "dateOfBirth": "1992-04-06T04:00:00.000Z",
+      "email": "test3@testeando.com",
+      "sex": "Men",
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+---------DELETE user for id--------------
+  DELETE--Url 127.0.0.1:8000/api/user/id
+  -Return-status(200)-JSON
+  {
+    message:''
+  }
+________________________________________
+--------------Login user----------------
+  POST--Url 127.0.0.1:8000/api/user/login
+  -Send-JSON
+  {
+    "email": "test@testeando.com",
+    "password": "1234"
+  }
+  -Return-status(200)-JSON
+  {
+    sessionId:''
+  }
+________________________________________
+/////////////////////////////////////////
+///////////////Publication///////////////
+/////////////////////////////////////////
+--------------Add Publication------------
+  POST---Url 127.0.0.1:8000/api/user
+  Send-JSON
+  {
+    'title': 'test',
+    'creator': '58233eea8984262c8865e8dd',
+    'file': 'enlaplaya.jpg'
+  }
+  Return-status(201)-JSON
+  {
+    'Publication':{
+      'title': 'test',
+      'creator': '58233eea8984262c8865e8dd',
+      'file': 'enlaplaya.jpg'
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+----------Get all Publication-----------
+  GET--Url 127.0.0.1:8000/api/publication
+  Retunr-status(200)-JSON
+  {
+    'Publication':{
+      'title': 'test',
+      'creator': '58233eea8984262c8865e8dd',
+      'file': 'enlaplaya.jpg'
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+--------Get Publication for id----------
+  GET--Url 127.0.0.1:8000/api/publication/id
+  Retunr-status(200)-JSON
+  {
+    'Publication':{
+      'title': 'test',
+      'creator': '58233eea8984262c8865e8dd',
+      'file': 'enlaplaya.jpg'
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+-------Get Publications for user--------
+  GET--Url 127.0.0.1:8000/publication/user/id
+  Retunr-status(200)-JSON
+  {
+    'Publication':{
+      'title': 'test',
+      'creator': '58233eea8984262c8865e8dd',
+      'file': 'enlaplaya.jpg'
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+--------Edit Publication for id---------
+  PUT--Url 127.0.0.1:8000/api/publication/id
+  Send-JSON
+  {
+    'title': 'test update'
+  }
+  Retunr-status(200)-JSON
+  {
+    'Publication':{
+      'title': 'test update',
+      'creator': '58233eea8984262c8865e8dd',
+      'file': 'enlaplaya.jpg'
+      "_id": "582650e60319602dcc2f8534"
+    }
+  }
+________________________________________
+-------Delete Publication for id--------
+  DELETE-Url 127.0.0.1:8000/api/publication/id
+  Retunr-status(200)-JSON
+  {
+    message:''
+  }
+________________________________________
