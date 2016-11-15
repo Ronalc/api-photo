@@ -10,15 +10,14 @@ const http = require('http')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
+const routerApp = require("./routerApp");
 const authSession = require('./middlewares/session')
 const realTime = require('./realTime')
 const UserCtrl = require('./controlers/User')
-const PublicationCtrl = require('./controlers/Publication')
 
 const app = express()
 const server = http.Server(app)
 const client = redis.createClient()
-const router = express.Router()
 const routerAuth = express.Router()
 /*
   * Use middlewares
@@ -72,31 +71,9 @@ routerAuth.route('/')
     res.status(200).json({message:'Hola client'})
   })
 
-router.route('/user')
-  .get(UserCtrl.findAll)
-
-// Router user by id
-router.route('/user/:id')
-  .get(UserCtrl.findById)
-  .put(UserCtrl.update)
-  .delete(UserCtrl.delete)
-// Route basic publication
-router.route('/publication')
-  .get(PublicationCtrl.findAll)
-  .post(PublicationCtrl.add)
-
-// Router user by id
-router.route('/publication/:id')
-  .get(PublicationCtrl.findById)
-  .put(PublicationCtrl.update)
-  .delete(PublicationCtrl.delete)
-
-// Route get all publications for user
-router.route('/publication/user/:id')
-  .get(PublicationCtrl.findByIdUser)
 
 app.use('/api',routerAuth)
 app.use('/api/app', authSession.ensureAuthenticated)
-app.use('/api/app',router)
+app.use('/api/app',routerApp)
 server.listen(8000)
 module.exports = server
