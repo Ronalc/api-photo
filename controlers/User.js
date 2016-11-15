@@ -1,5 +1,6 @@
 'use strict'
 const User = require('../models/User').User
+const services = require('../middlewares/services')
 
 // POST - Add new user
 exports.add = (req,res) => {
@@ -21,7 +22,7 @@ exports.add = (req,res) => {
     if (err) res.status(500).json({error: true, message: err.message})
     res
       .status(201)
-      .json({user:user})
+      .json({message:'user create'})
   })
 }
 // GET - Return all users
@@ -98,9 +99,11 @@ exports.login = (req,res) => {
   if(!req.body.password) res.status(400).json({error:true,message:'password null'})
   User.findOne(
     {email:req.body.email, password:req.body.password},(err,user) => {
-      if (err) res.status(500).json({error:true, message:err.message})
+      if (err) return res.status(500).json({error:true, message:err.message})
+      let token = services.createToken(user)
       res
         .status(200)
-        .json({sessionId: user._id})
+        .json({token:token})
+      console.log(token);
     })
 }

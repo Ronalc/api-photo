@@ -1,33 +1,20 @@
 'use strict'
-/*
-  * Dependencias
-*/
-const User = require('../models/User').User
+const jwt = require('jwt-simple')
+const moment = require('moment')
+const config = require('./config')
 
-/*
-/ Modulo que valida, si algun usuario a inicado session
-*/
+exports.ensureAuthenticated = (req,res,next) => {
+  if (!req.headers.authorization) {
+    return res
+        .status(403)
+        .json({message:'Tu peticion no tiene cabecera de Auth'})
+  }
+  let token = req.headers.authorization
+  let payload = jwt.decode(token, config.TOKEN_SECRET)
 
-module.exports = (req, res, next) => {
-  if (!req.session.user_id) {
-    res
-      .status()
-      .json()
+  if (payload.exp <= moment().unix()) {
+    return res.status(401).json({message:'El token ha expirado'})
   }
-  else{
-    // Search user by id
-    User.findById(req.session.user_id,(err,user) => {
-      if (err) {
-        res
-          .status()
-          .json()
-      }
-      else{
-        res
-          .status()
-          .json()
-        next()
-      }
-    })
-  }
+  req.user = payload.sub
+  next()
 }

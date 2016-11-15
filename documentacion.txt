@@ -20,18 +20,7 @@
     }
   -Return-Status(201)-JSON
   {
-    "user": {
-      "__v": 0,
-      "name": "test 3",
-      "lastName": "testeando3",
-      "userName": "Testamendo3",
-      "password": "1234",
-      "age": 18,
-      "dateOfBirth": "1992-04-06T04:00:00.000Z",
-      "email": "test3@testeando.com",
-      "sex": "Men",
-      "_id": "582650e60319602dcc2f8534"
-    }
+    message:'user create'
   }
 ________________________________________
 ------------Get all users---------------
@@ -111,7 +100,7 @@ ________________________________________
   }
   -Return-status(200)-JSON
   {
-    sessionId:''
+    token:''
   }
 ________________________________________
 /////////////////////////////////////////

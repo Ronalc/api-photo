@@ -10,7 +10,7 @@ const http = require('http')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
-const sessionMiddleware = require('./middlewares/session')
+const authSession = require('./middlewares/session')
 const realTime = require('./realTime')
 const UserCtrl = require('./controlers/User')
 const PublicationCtrl = require('./controlers/Publication')
@@ -19,6 +19,7 @@ const app = express()
 const server = http.Server(app)
 const client = redis.createClient()
 const router = express.Router()
+const routerAuth = express.Router()
 /*
   * Use middlewares
 */
@@ -57,18 +58,22 @@ mongoose.connect('mongodb://localhost/api-photo', (err,res) => {
 /*
   * Enrutamineto
 */
-router.route('/')
+// route Auth
+routerAuth.route('/login')
+  .post(UserCtrl.login)
+
+routerAuth.route('/signup')
+  .post(UserCtrl.add)
+
+
+// Route Basic user
+routerAuth.route('/')
   .get((req,res) => {
     res.status(200).json({message:'Hola client'})
   })
 
-router.route('/user/login')
-  .post(UserCtrl.login)
-
-// Route Basic user
 router.route('/user')
   .get(UserCtrl.findAll)
-  .post(UserCtrl.add)
 
 // Router user by id
 router.route('/user/:id')
@@ -90,8 +95,8 @@ router.route('/publication/:id')
 router.route('/publication/user/:id')
   .get(PublicationCtrl.findByIdUser)
 
-
-//app.use('/app', sessionMiddleware)
-app.use('/api',router)
+app.use('/api',routerAuth)
+app.use('/api/app', authSession.ensureAuthenticated)
+app.use('/api/app',router)
 server.listen(8000)
 module.exports = server
