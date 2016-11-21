@@ -11,15 +11,15 @@ describe('Ruta para los nuevos usuarios', () => {
   describe('POST /', () =>  {
     it('Esto deberia registrar un nuevo usuario',(done) => {
       let user = {
-        'name': 'test',
-        'lastName': 'testeando',
-        'userName': 'Testamendo',
-        'password': '1234',
-        'age': 18,
-        'dateOfBirth': '04/06/1992',
-        'email': 'test@testeando.com',
-        'sex': 'Men',
-        'passwordConfirmation': '1234'
+        "name": "test",
+        "lastName": "testeando",
+        "userName": "Testamendo",
+        "password": "1234",
+        "age": 18,
+        "dateOfBirth": "04/06/1992",
+        "email": "test@testeando.com",
+        "sex": "Men",
+        "passwordConfirmation": "1234"
       }
       request
         .post('/newUser')

@@ -27,7 +27,7 @@ const user_schema = new Schema({
   password: {
     type: String,
     required: 'La contraseña es obligatoria',
-    maxlength: [8, 'Contraseña muy corta'],
+    minlength: [8, 'Contraseña muy corta'],
     //validate: passwordValidation
   },
   age: {

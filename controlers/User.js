@@ -1,17 +1,18 @@
 'use strict'
 const User = require('../models/User').User
 const services = require('../middlewares/services')
+const encrypt = require('../middlewares/encrypt')
 
 // POST - Add new user
 exports.add = (req,res) => {
   console.log('POST/')
   if (!req.body) res.status(400).json({error: true, message:'Body empty'})
-
+  console.log(req.body);
   let user = new User({
     name: req.body.name,
     lastName: req.body.lastName,
     userName: req.body.userName,
-    password: req.body.password,
+    password: encrypt.generate(req.body.password),
     age: req.body.age,
     dateOfBirth: req.body.dateOfBirth,
     email: req.body.email,
@@ -19,7 +20,7 @@ exports.add = (req,res) => {
     password_confirmation: req.body.passwordConfirmation
   })
   user.save((err) => {
-    if (err) res.status(500).json({error: true, message: err.message})
+    if (err) return res.status(500).json({error: true, message: err})
     res
       .status(201)
       .json({message:'user create'})
@@ -35,7 +36,7 @@ exports.findAll = (req,res) => {
       .json({users:users})
   })
 }
-//GET - Retunr user byId
+//GET - Return user byId
 exports.findById = (req,res) => {
   console.log('GET/')
   if (!req.params.id) res.status(400).json({error: true, message:'error id'})
@@ -94,16 +95,27 @@ exports.delete = (req,res) => {
 }
 //Login- User
 exports.login = (req,res) => {
-  if(!req.body) res.status(400).json({error:true,message:'Body empty'})
-  if(!req.body.email) res.status(400).json({error:true,message:'email null'})
-  if(!req.body.password) res.status(400).json({error:true,message:'password null'})
-  User.findOne(
-    {email:req.body.email, password:req.body.password},(err,user) => {
+  if(!req.body) return res.status(400).json({error:true,message:'Body empty'})
+  if(!req.body.email) return res.status(400).json({error:true,message:'email null'})
+  let email = req.body.email
+  if(!req.body.password) return res.status(400).json({error:true,message:'password null'})
+  let password = req.body.password
+
+  // find user by email
+  User.findOne({email: email},(err,user) => {
       if (err) return res.status(500).json({error:true, message:err.message})
-      let token = services.createToken(user)
-      res
-        .status(200)
-        .json({token:token})
-      console.log(token);
+
+      // hash compare if true create token
+      encrypt.compare(password, user.password, (err, resLogin) => {
+        if (err) return res.status(500).json({error:true,message:err})
+        if (resLogin) {
+          // create token for user
+          let token = services.createToken(user)
+          return res.status(200).json({token:token})
+            console.log(token);
+        }
+        return res.status(400).json({error:true,message:'password or email fail'})
+      })
+
     })
 }

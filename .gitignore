@@ -6,3 +6,9 @@ dump.rdb
 
 # Dependency directories
 node_modules/
+
+# config
+config.js
+
+#old test
+test/
