@@ -14,7 +14,6 @@ const UserCtrl = require('./controlers/User')
 
 const app = express()
 const server = http.Server(app)
-const client = redis.createClient()
 const routerAuth = express.Router()
 /*
   * Use middlewares
